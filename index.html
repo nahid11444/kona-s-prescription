@@ -7,95 +7,80 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: Arial, sans-serif;
       margin: 10px;
-      background: linear-gradient(135deg, #a2caff, #ffffff);
-      color: #123366;
+      background: linear-gradient(135deg, #d2e6ff, #ffffff);
+      color: #1a2a5a;
     }
     h1, h2 {
       text-align: center;
-      color: #0b3d91;
-      text-shadow: 1px 1px 3px #a0c4ff;
+      color: #234d9f;
     }
     .section {
-      background: linear-gradient(145deg, #d6e6ff, #b8d1ff);
-      padding: 18px;
-      margin: 14px 0;
-      border-radius: 12px;
-      box-shadow: 0 4px 14px rgba(11, 61, 145, 0.25);
-      border: 1px solid #6991ff;
-      transition: box-shadow 0.3s ease;
-    }
-    .section:hover {
-      box-shadow: 0 6px 20px rgba(11, 61, 145, 0.4);
+      background: #f7fbff;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(36, 77, 159, 0.15);
     }
     input, textarea {
       width: 100%;
-      margin-bottom: 12px;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 2px solid #5380ff;
+      margin-bottom: 10px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1.5px solid #7aa7f7;
       font-size: 1em;
       box-sizing: border-box;
-      transition: border-color 0.3s, box-shadow 0.3s;
-      background-color: #f0f6ff;
-      color: #123366;
+      transition: border-color 0.3s;
     }
     input:focus, textarea:focus {
-      border-color: #0b3d91;
+      border-color: #3a5bcc;
       outline: none;
-      box-shadow: 0 0 6px #0b3d91aa;
-      background-color: #e2ebff;
     }
     button {
-      padding: 12px 22px;
-      margin: 6px 6px 6px 0;
+      padding: 10px 18px;
+      margin: 5px 5px 5px 0;
       border: none;
-      background: linear-gradient(45deg, #3a5bcc, #1f3c92);
-      color: #f0f4ff;
-      border-radius: 10px;
-      font-weight: 700;
+      background: #3a5bcc;
+      color: white;
+      border-radius: 8px;
+      font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 4px 10px #1f3c92cc;
-      transition: background 0.3s, box-shadow 0.3s;
+      box-shadow: 0 3px 6px #324ea6;
+      transition: background-color 0.3s;
     }
     button:hover {
-      background: linear-gradient(45deg, #244baf, #132a66);
-      box-shadow: 0 6px 15px #132a66dd;
+      background: #2f4798;
     }
     .row {
       display: flex;
-      gap: 22px;
+      gap: 20px;
       flex-wrap: wrap;
     }
     .col {
-      flex: 1 1 320px;
-      min-width: 300px;
+      flex: 1 1 300px;
+      min-width: 280px;
     }
     label {
-      font-weight: 700;
-      color: #0b3d91;
+      font-weight: 600;
+      color: #234d9f;
       display: block;
-      margin-bottom: 8px;
-      text-shadow: 0 0 1px #6991ff;
+      margin-bottom: 6px;
     }
     ol {
-      padding-left: 22px;
-      max-height: 130px;
+      padding-left: 20px;
+      max-height: 120px;
       overflow-y: auto;
-      background: #cfe0ff;
-      border-radius: 8px;
-      padding: 12px 18px;
-      border: 1.5px solid #a3b9ff;
-      margin-top: 8px;
-      margin-bottom: 18px;
-      box-shadow: inset 0 0 8px #acc6ff;
-      color: #123366;
+      background: #e7f0ff;
+      border-radius: 6px;
+      padding: 10px 15px;
+      border: 1px solid #a8c1f7;
+      margin-top: 5px;
+      margin-bottom: 15px;
     }
     ol li {
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       user-select: none;
-      font-weight: 600;
     }
     .autocomplete {
       position: relative;
@@ -103,64 +88,53 @@
     .suggestions-list {
       position: absolute;
       background: white;
-      border: 2px solid #5380ff;
-      max-height: 150px;
+      border: 1px solid #7aa7f7;
+      max-height: 140px;
       overflow-y: auto;
       width: 100%;
       z-index: 9999;
       list-style: none;
       margin: 0;
       padding: 0;
-      border-radius: 0 0 8px 8px;
-      box-shadow: 0 6px 14px rgba(58, 91, 204, 0.35);
+      border-radius: 0 0 6px 6px;
+      box-shadow: 0 4px 8px rgba(58, 91, 204, 0.3);
     }
     .suggestions-list li {
-      padding: 10px 14px;
+      padding: 8px 12px;
       cursor: pointer;
-      transition: background-color 0.25s;
-      font-weight: 600;
+      transition: background-color 0.2s;
     }
     .suggestions-list li:hover {
-      background-color: #a8bfff;
-      color: #0b3d91;
+      background-color: #c5d9ff;
     }
     .prescription-item {
-      background: #c6d9ff;
-      padding: 14px 18px;
-      margin: 9px 0;
-      border-radius: 12px;
-      box-shadow: 0 3px 7px rgba(26, 42, 90, 0.2);
-      font-size: 1em;
-      color: #0a265a;
-      font-weight: 600;
+      background: #d9e4ff;
+      padding: 12px 15px;
+      margin: 7px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(58, 91, 204, 0.15);
+      font-size: 0.95em;
     }
     .prescription-item button {
-      margin-top: 8px;
-      margin-right: 10px;
-      font-size: 0.9em;
-      padding: 8px 14px;
-      background-color: #244baf;
+      margin-top: 6px;
+      margin-right: 8px;
+      font-size: 0.85em;
+      padding: 6px 12px;
+      background-color: #2f4798;
       box-shadow: none;
-      border-radius: 8px;
-      color: #e1eaff;
-      font-weight: 700;
-      transition: background-color 0.3s;
-      cursor: pointer;
     }
     .prescription-item button:hover {
-      background-color: #132a66;
+      background-color: #1d2c65;
     }
     /* Saved prescription container */
     #savedPrescriptions {
-      max-height: 340px;
+      max-height: 320px;
       overflow-y: auto;
-      background: #c3d1ff;
-      border-radius: 14px;
-      padding: 20px;
-      box-shadow: inset 0 0 15px #799bff;
-      margin-top: 20px;
-      color: #0a265a;
-      font-weight: 600;
+      background: #e7f0ff;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: inset 0 0 10px #a8c1f7;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -169,7 +143,7 @@
 <h1>Smart Prescription Editor</h1>
 <h2>Dr. Kousarin Akter Kona, MBBS - CMH Bogura</h2>
 
-<div class="section" style="max-width: 720px; margin: 0 auto;">
+<div class="section" style="max-width: 700px; margin: 0 auto;">
   <label>Patient Name:</label>
   <input type="text" id="patientName" placeholder="Enter patient name" />
 
@@ -196,8 +170,8 @@
   </div>
 </div>
 
-<div class="row" style="max-width: 920px; margin: 24px auto;">
-  <div class="col section" style="flex: 1.3;">
+<div class="row" style="max-width: 900px; margin: 20px auto;">
+  <div class="col section" style="flex: 1.2;">
     <label>History:</label>
     <textarea id="history" rows="4" placeholder="Enter patient history"></textarea>
 
@@ -218,7 +192,7 @@
     <textarea id="advice" rows="3" placeholder="Enter advice"></textarea>
   </div>
 
-  <div class="col section" style="flex: 1.1;">
+  <div class="col section" style="flex: 1;">
     <label>Medication:</label>
     <div class="autocomplete">
       <input
@@ -234,26 +208,26 @@
   </div>
 </div>
 
-<div style="max-width: 920px; margin: 0 auto; text-align: center;">
+<div style="max-width: 900px; margin: 0 auto; text-align: center;">
   <button onclick="openSaveModal()">💾 Save Prescription</button>
   <button onclick="viewPrescriptions()">📄 View Saved Prescriptions</button>
   <button onclick="downloadPDF()">⬇️ Download as PDF</button>
 </div>
 
-<div id="savedPrescriptions" style="display:none; max-width:920px; margin: 20px auto;">
+<div id="savedPrescriptions" style="display:none; max-width:900px; margin: 15px auto;">
   <h3>Saved Prescriptions</h3>
   <div id="prescriptionList"></div>
 </div>
 
 <!-- Save Modal (for localStorage save) -->
-<div id="saveModal" style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100%; height:100%; background:rgba(11, 61, 145, 0.5);">
-  <div style="background:#e3ebff; padding:25px; border-radius:14px; width:360px; max-width:90%; margin: 12% auto; box-shadow: 0 0 20px #0b3d91cc;">
-    <h3 style="color:#0b3d91; margin-top:0; text-align:center; text-shadow: 0 0 5px #6991ff;">Save Prescription Locally</h3>
+<div id="saveModal" style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.4);">
+  <div style="background:#fff; padding:20px; border-radius:10px; width:320px; max-width:90%; margin: 12% auto; box-shadow: 0 0 12px #234d9f;">
+    <h3 style="color:#234d9f; margin-top:0;">Save Prescription Locally</h3>
     <label for="repoInput">Repository (Folder) name:</label>
     <input type="text" id="repoInput" placeholder="e.g. Diabetes, Cardiology" />
     <label for="fileNameInput">File Name:</label>
     <input type="text" id="fileNameInput" placeholder="e.g. PatientName_2025-06-02" />
-    <div style="text-align:right; margin-top: 20px;">
+    <div style="text-align:right; margin-top: 15px;">
       <button onclick="confirmSave()">Save</button>
       <button onclick="closeSaveModal()">Cancel</button>
     </div>
@@ -276,27 +250,22 @@
     const input = document.getElementById(type + "Input");
     const list = document.getElementById(type + "Suggestions");
     const val = input.value.trim().toLowerCase();
-
     if (!val) {
       list.hidden = true;
       return;
     }
-
     const matches = suggestions[type].filter(item => item.toLowerCase().includes(val));
     list.innerHTML = "";
-
     if (matches.length === 0) {
       list.hidden = true;
       return;
     }
-
     matches.forEach(item => {
       const li = document.createElement("li");
       li.textContent = item;
       li.onclick = () => addItem(type, item);
       list.appendChild(li);
     });
-
     list.hidden = false;
   }
 
@@ -305,39 +274,258 @@
     const list = document.getElementById(type + "List");
 
     // Check duplicates
-    if ([...list.children].some(li => li.textContent === item)) return;
+    const existingItems = Array.from(list.children).map(li => li.textContent.toLowerCase());
+    if (existingItems.includes(item.toLowerCase())) {
+      alert(`${item} already added.`);
+      clearSuggestions(type);
+      return;
+    }
 
-    const li = document.createElement("li");
-    li.textContent = item;
-    list.appendChild(li);
+    if (type === "medication") {
+      // For medication add dosage and meal time prompt
+      const dosage = prompt(`Enter dosage for ${item} (e.g. 500mg)`,'');
+      if (dosage === null) {
+        clearSuggestions(type);
+        return;
+      }
+      let mealTime = prompt("Before or After Meal? (Enter 'Before' or 'After')", "Before");
+      if (mealTime === null) mealTime = "Before";
+      mealTime = mealTime.trim().toLowerCase();
+      if (!["before","after"].includes(mealTime)) mealTime = "Before";
+      const medText = `${item} - ${dosage}, ${mealTime.charAt(0).toUpperCase()+mealTime.slice(1)} meal`;
+      const li = document.createElement("li");
+      li.textContent = medText;
+      list.appendChild(li);
+    } else {
+      const li = document.createElement("li");
+      li.textContent = item;
+      list.appendChild(li);
+    }
 
-    // Clear input and suggestions
     document.getElementById(type + "Input").value = "";
-    document.getElementById(type + "Suggestions").hidden = true;
+    clearSuggestions(type);
   }
 
-  // Modal handling
+  function clearSuggestions(type) {
+    const list = document.getElementById(type + "Suggestions");
+    list.innerHTML = "";
+    list.hidden = true;
+  }
+
+  // Collect all form data
+  function getFormData() {
+    return {
+      patientName: document.getElementById("patientName").value.trim(),
+      age: document.getElementById("age").value.trim(),
+      sex: document.getElementById("sex").value.trim(),
+      date: document.getElementById("date").value,
+      regNo: document.getElementById("regNo").value.trim(),
+      history: document.getElementById("history").value.trim(),
+      advice: document.getElementById("advice").value.trim(),
+      investigation: Array.from(document.getElementById("investigationList").children).map(li => li.textContent),
+      medication: Array.from(document.getElementById("medicationList").children).map(li => li.textContent),
+    };
+  }
+
+  // Open Save Modal
   function openSaveModal() {
+    document.getElementById("repoInput").value = "";
+    document.getElementById("fileNameInput").value = "";
     document.getElementById("saveModal").style.display = "block";
   }
+
   function closeSaveModal() {
     document.getElementById("saveModal").style.display = "none";
   }
 
+  // Save prescription locally in localStorage
   function confirmSave() {
-    // Implement save logic here...
-    alert("Save functionality not implemented in this snippet.");
+    const repo = document.getElementById("repoInput").value.trim();
+    let fileName = document.getElementById("fileNameInput").value.trim();
+    if (!fileName) {
+      alert("Please enter a file name.");
+      return;
+    }
+    if (!repo) {
+      alert("Please enter a repository/folder name.");
+      return;
+    }
+
+    const data = getFormData();
+    const savedData = JSON.parse(localStorage.getItem("prescriptions") || "{}");
+
+    if (!savedData[repo]) savedData[repo] = {};
+
+    savedData[repo][fileName] = data;
+
+    localStorage.setItem("prescriptions", JSON.stringify(savedData));
+    alert(`Prescription saved under "${repo}" repository with filename "${fileName}".`);
     closeSaveModal();
   }
 
+  // View saved prescriptions
   function viewPrescriptions() {
-    // Implement view logic here...
-    alert("View functionality not implemented in this snippet.");
+    const container = document.getElementById("savedPrescriptions");
+    const listDiv = document.getElementById("prescriptionList");
+    listDiv.innerHTML = "";
+
+    const savedData = JSON.parse(localStorage.getItem("prescriptions") || "{}");
+    if (Object.keys(savedData).length === 0) {
+      listDiv.innerHTML = "<p>No saved prescriptions found.</p>";
+      container.style.display = "block";
+      return;
+    }
+
+    for (const repo in savedData) {
+      const repoDiv = document.createElement("div");
+      repoDiv.style.marginBottom = "15px";
+      const repoTitle = document.createElement("h4");
+      repoTitle.textContent = `Repository: ${repo}`;
+      repoDiv.appendChild(repoTitle);
+
+      for (const filename in savedData[repo]) {
+        const presc = savedData[repo][filename];
+        const itemDiv = document.createElement("div");
+        itemDiv.className = "prescription-item";
+
+        itemDiv.innerHTML = `<strong>${filename}</strong><br>
+          <em>Patient:</em> ${presc.patientName || '-'} | <em>Date:</em> ${presc.date || '-'}<br>
+          <button onclick='editPrescription("${repo}","${filename}")'>Edit</button>
+          <button onclick='deletePrescription("${repo}","${filename}")'>Delete</button>
+          <button onclick='downloadSavedPrescription("${repo}","${filename}")'>Download PDF</button>
+        `;
+
+        repoDiv.appendChild(itemDiv);
+      }
+
+      listDiv.appendChild(repoDiv);
+    }
+
+    container.style.display = "block";
+    window.scrollTo(0, document.body.scrollHeight);
   }
 
-  function downloadPDF() {
-    // Implement download logic here...
-    alert("Download PDF functionality not implemented in this snippet.");
+  // Edit prescription
+  function editPrescription(repo, filename) {
+    const savedData = JSON.parse(localStorage.getItem("prescriptions") || "{}");
+    if (!savedData[repo] || !savedData[repo][filename]) {
+      alert("Prescription not found.");
+      return;
+    }
+    const data = savedData[repo][filename];
+    document.getElementById("patientName").value = data.patientName || "";
+    document.getElementById("age").value = data.age || "";
+    document.getElementById("sex").value = data.sex || "";
+    document.getElementById("date").value = data.date || "";
+    document.getElementById("regNo").value = data.regNo || "";
+    document.getElementById("history").value = data.history || "";
+    document.getElementById("advice").value = data.advice || "";
+
+    // Fill investigations
+    const invList = document.getElementById("investigationList");
+    invList.innerHTML = "";
+    (data.investigation || []).forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      invList.appendChild(li);
+    });
+
+    // Fill medications
+    const medList = document.getElementById("medicationList");
+    medList.innerHTML = "";
+    (data.medication || []).forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      medList.appendChild(li);
+    });
+
+    closeSaveModal();
+    alert(`Loaded prescription "${filename}" from repository "${repo}" for editing.`);
+    window.scrollTo(0, 0);
+  }
+
+  // Delete prescription
+  function deletePrescription(repo, filename) {
+    if (!confirm(`Delete prescription "${filename}" from repository "${repo}"?`)) return;
+
+    const savedData = JSON.parse(localStorage.getItem("prescriptions") || "{}");
+    if (!savedData[repo] || !savedData[repo][filename]) {
+      alert("Prescription not found.");
+      return;
+    }
+
+    delete savedData[repo][filename];
+    // If repo empty, delete repo too
+    if (Object.keys(savedData[repo]).length === 0) {
+      delete savedData[repo];
+    }
+
+    localStorage.setItem("prescriptions", JSON.stringify(savedData));
+    alert("Prescription deleted.");
+    viewPrescriptions();
+  }
+
+  // Download current form as PDF with native Save As dialog (or fallback)
+  async function downloadPDF() {
+    const data = getFormData();
+    if (!data.patientName) {
+      alert("Please enter patient name before downloading.");
+      return;
+    }
+    const element = document.createElement("div");
+    element.style.fontFamily = "Arial, sans-serif";
+    element.style.color = "#1a2a5a";
+    element.innerHTML = `
+      <h2 style="color:#234d9f;">Prescription</h2>
+      <h3>${data.patientName} — ${data.date}</h3>
+      <p><b>Age:</b> ${data.age} &nbsp;&nbsp; <b>Sex:</b> ${data.sex} &nbsp;&nbsp; <b>Reg No:</b> ${data.regNo}</p>
+      <hr />
+      <h4>History</h4><p>${data.history || '-'}</p>
+      <h4>Investigation</h4><ul>${data.investigation.map(i => `<li>${i}</li>`).join('')}</ul>
+      <h4>Medication</h4><ul>${data.medication.map(m => `<li>${m}</li>`).join('')}</ul>
+      <h4>Advice</h4><p>${data.advice || '-'}</p>
+    `;
+
+    // Use html2pdf library to generate PDF blob
+    const opt = {
+      margin:       0.5,
+      filename:     'prescription.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2 },
+      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    try {
+      const pdfBlob = await html2pdf().from(element).set(opt).outputPdf('blob');
+
+      if ('showSaveFilePicker' in window) {
+        // Native Save As dialog
+        const handle = await window.showSaveFilePicker({
+          suggestedName: 'prescription.pdf',
+          types: [{
+            description: 'PDF Files',
+            accept: {'application/pdf': ['.pdf']},
+          }],
+        });
+        const writable = await handle.createWritable();
+        await writable.write(pdfBlob);
+        await writable.close();
+        alert('Prescription saved successfully via native Save As dialog!');
+      } else {
+        // Fallback for unsupported browsers
+        const url = URL.createObjectURL(pdfBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'prescription.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        alert('Saved via download. Your browser does not support native Save As dialog.');
+      }
+    } catch (err) {
+      alert('Save canceled or failed: ' + err.message);
+    }
   }
 </script>
 
