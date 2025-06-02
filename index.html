@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Smart Prescription Editor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 10px;
+      background: linear-gradient(135deg, #a2caff, #ffffff);
+      color: #123366;
+    }
+    h1, h2 {
+      text-align: center;
+      color: #0b3d91;
+      text-shadow: 1px 1px 3px #a0c4ff;
+    }
+    .section {
+      background: linear-gradient(145deg, #d6e6ff, #b8d1ff);
+      padding: 18px;
+      margin: 14px 0;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(11, 61, 145, 0.25);
+      border: 1px solid #6991ff;
+      transition: box-shadow 0.3s ease;
+    }
+    .section:hover {
+      box-shadow: 0 6px 20px rgba(11, 61, 145, 0.4);
+    }
+    input, textarea {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 2px solid #5380ff;
+      font-size: 1em;
+      box-sizing: border-box;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      background-color: #f0f6ff;
+      color: #123366;
+    }
+    input:focus, textarea:focus {
+      border-color: #0b3d91;
+      outline: none;
+      box-shadow: 0 0 6px #0b3d91aa;
+      background-color: #e2ebff;
+    }
+    button {
+      padding: 12px 22px;
+      margin: 6px 6px 6px 0;
+      border: none;
+      background: linear-gradient(45deg, #3a5bcc, #1f3c92);
+      color: #f0f4ff;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 10px #1f3c92cc;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    button:hover {
+      background: linear-gradient(45deg, #244baf, #132a66);
+      box-shadow: 0 6px 15px #132a66dd;
+    }
+    .row {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+    .col {
+      flex: 1 1 320px;
+      min-width: 300px;
+    }
+    label {
+      font-weight: 700;
+      color: #0b3d91;
+      display: block;
+      margin-bottom: 8px;
+      text-shadow: 0 0 1px #6991ff;
+    }
+    ol {
+      padding-left: 22px;
+      max-height: 130px;
+      overflow-y: auto;
+      background: #cfe0ff;
+      border-radius: 8px;
+      padding: 12px 18px;
+      border: 1.5px solid #a3b9ff;
+      margin-top: 8px;
+      margin-bottom: 18px;
+      box-shadow: inset 0 0 8px #acc6ff;
+      color: #123366;
+    }
+    ol li {
+      margin-bottom: 6px;
+      user-select: none;
+      font-weight: 600;
+    }
+    .autocomplete {
+      position: relative;
+    }
+    .suggestions-list {
+      position: absolute;
+      background: white;
+      border: 2px solid #5380ff;
+      max-height: 150px;
+      overflow-y: auto;
+      width: 100%;
+      z-index: 9999;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 6px 14px rgba(58, 91, 204, 0.35);
+    }
+    .suggestions-list li {
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: background-color 0.25s;
+      font-weight: 600;
+    }
+    .suggestions-list li:hover {
+      background-color: #a8bfff;
+      color: #0b3d91;
+    }
+    .prescription-item {
+      background: #c6d9ff;
+      padding: 14px 18px;
+      margin: 9px 0;
+      border-radius: 12px;
+      box-shadow: 0 3px 7px rgba(26, 42, 90, 0.2);
+      font-size: 1em;
+      color: #0a265a;
+      font-weight: 600;
+    }
+    .prescription-item button {
+      margin-top: 8px;
+      margin-right: 10px;
+      font-size: 0.9em;
+      padding: 8px 14px;
+      background-color: #244baf;
+      box-shadow: none;
+      border-radius: 8px;
+      color: #e1eaff;
+      font-weight: 700;
+      transition: background-color 0.3s;
+      cursor: pointer;
+    }
+    .prescription-item button:hover {
+      background-color: #132a66;
+    }
+    /* Saved prescription container */
+    #savedPrescriptions {
+      max-height: 340px;
+      overflow-y: auto;
+      background: #c3d1ff;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: inset 0 0 15px #799bff;
+      margin-top: 20px;
+      color: #0a265a;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Smart Prescription Editor</h1>
+<h2>Dr. Kousarin Akter Kona, MBBS - CMH Bogura</h2>
+
+<div class="section" style="max-width: 720px; margin: 0 auto;">
+  <label>Patient Name:</label>
+  <input type="text" id="patientName" placeholder="Enter patient name" />
+
+  <div class="row">
+    <div class="col">
+      <label>Age:</label>
+      <input type="text" id="age" placeholder="Age" />
+    </div>
+    <div class="col">
+      <label>Sex:</label>
+      <input type="text" id="sex" placeholder="Male/Female/Other" />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <label>Date:</label>
+      <input type="date" id="date" />
+    </div>
+    <div class="col">
+      <label>Reg No:</label>
+      <input type="text" id="regNo" placeholder="Registration number" />
+    </div>
+  </div>
+</div>
+
+<div class="row" style="max-width: 920px; margin: 24px auto;">
+  <div class="col section" style="flex: 1.3;">
+    <label>History:</label>
+    <textarea id="history" rows="4" placeholder="Enter patient history"></textarea>
+
+    <label>Investigation:</label>
+    <div class="autocomplete">
+      <input
+        type="text"
+        id="investigationInput"
+        oninput="showSuggestions('investigation')"
+        autocomplete="off"
+        placeholder="Type and select investigation"
+      />
+      <ul id="investigationSuggestions" class="suggestions-list" hidden></ul>
+    </div>
+    <ol id="investigationList"></ol>
+
+    <label>Advice:</label>
+    <textarea id="advice" rows="3" placeholder="Enter advice"></textarea>
+  </div>
+
+  <div class="col section" style="flex: 1.1;">
+    <label>Medication:</label>
+    <div class="autocomplete">
+      <input
+        type="text"
+        id="medicationInput"
+        oninput="showSuggestions('medication')"
+        autocomplete="off"
+        placeholder="Type and select medication"
+      />
+      <ul id="medicationSuggestions" class="suggestions-list" hidden></ul>
+    </div>
+    <ol id="medicationList"></ol>
+  </div>
+</div>
+
+<div style="max-width: 920px; margin: 0 auto; text-align: center;">
+  <button onclick="openSaveModal()">💾 Save Prescription</button>
+  <button onclick="viewPrescriptions()">📄 View Saved Prescriptions</button>
+  <button onclick="downloadPDF()">⬇️ Download as PDF</button>
+</div>
+
+<div id="savedPrescriptions" style="display:none; max-width:920px; margin: 20px auto;">
+  <h3>Saved Prescriptions</h3>
+  <div id="prescriptionList"></div>
+</div>
+
+<!-- Save Modal (for localStorage save) -->
+<div id="saveModal" style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100%; height:100%; background:rgba(11, 61, 145, 0.5);">
+  <div style="background:#e3ebff; padding:25px; border-radius:14px; width:360px; max-width:90%; margin: 12% auto; box-shadow: 0 0 20px #0b3d91cc;">
+    <h3 style="color:#0b3d91; margin-top:0; text-align:center; text-shadow: 0 0 5px #6991ff;">Save Prescription Locally</h3>
+    <label for="repoInput">Repository (Folder) name:</label>
+    <input type="text" id="repoInput" placeholder="e.g. Diabetes, Cardiology" />
+    <label for="fileNameInput">File Name:</label>
+    <input type="text" id="fileNameInput" placeholder="e.g. PatientName_2025-06-02" />
+    <div style="text-align:right; margin-top: 20px;">
+      <button onclick="confirmSave()">Save</button>
+      <button onclick="closeSaveModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Sample autocomplete data
+  const suggestions = {
+    investigation: [
+      "CBC", "Blood Sugar Fasting", "ECG", "Chest X-Ray", "Liver Function Test", "Creatinine", "TSH", "Ultrasound"
+    ],
+    medication: [
+      "Paracetamol", "Omeprazole", "Metformin", "Amlodipine", "Losartan", "Cetirizine", "Azithromycin", "Ibuprofen"
+    ],
+  };
+
+  // Show suggestions for autocomplete inputs
+  function showSuggestions(type) {
+    const input = document.getElementById(type + "Input");
+    const list = document.getElementById(type + "Suggestions");
+    const val = input.value.trim().toLowerCase();
+
+    if (!val) {
+      list.hidden = true;
+      return;
+    }
+
+    const matches = suggestions[type].filter(item => item.toLowerCase().includes(val));
+    list.innerHTML = "";
+
+    if (matches.length === 0) {
+      list.hidden = true;
+      return;
+    }
+
+    matches.forEach(item => {
+      const li = document.createElement("li");
+      li.textContent = item;
+      li.onclick = () => addItem(type, item);
+      list.appendChild(li);
+    });
+
+    list.hidden = false;
+  }
+
+  // Add item to list and clear input
+  function addItem(type, item) {
+    const list = document.getElementById(type + "List");
+
+    // Check duplicates
+    if ([...list.children].some(li => li.textContent === item)) return;
+
+    const li = document.createElement("li");
+    li.textContent = item;
+    list.appendChild(li);
+
+    // Clear input and suggestions
+    document.getElementById(type + "Input").value = "";
+    document.getElementById(type + "Suggestions").hidden = true;
+  }
+
+  // Modal handling
+  function openSaveModal() {
+    document.getElementById("saveModal").style.display = "block";
+  }
+  function closeSaveModal() {
+    document.getElementById("saveModal").style.display = "none";
+  }
+
+  function confirmSave() {
+    // Implement save logic here...
+    alert("Save functionality not implemented in this snippet.");
+    closeSaveModal();
+  }
+
+  function viewPrescriptions() {
+    // Implement view logic here...
+    alert("View functionality not implemented in this snippet.");
+  }
+
+  function downloadPDF() {
+    // Implement download logic here...
+    alert("Download PDF functionality not implemented in this snippet.");
+  }
+</script>
+
+</body>
+</html>
